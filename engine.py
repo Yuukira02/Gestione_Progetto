@@ -30,12 +30,13 @@ def add_docs(writer):
     for f in filelist:
         if f.endswith(".txt"):
             try:
-                fileobj = open(path + f, "r")
+                fileobj = open(path + f, "r", encoding="utf8")
+            #encoding="surrogateescape"
             except Exception as e:
                 print(e)
                 exit()
 
-            title = f.removesuffix(".txt")
+            title = fileobj.readline()
             url = fileobj.readline()
             modtime = format_date(fileobj.readline())
             content = fileobj.read()

@@ -39,7 +39,7 @@ for category in categories:
 
                     # Estrai il testo dai tag <p> nella classe 'story__text'
                     soup = BeautifulSoup(article.html, 'html.parser')
-                    text_content = '\n'.join([p.get_text(strip=True) for p in soup.select('.story__text p')])
+                    text_content = ' '.join([p.get_text(strip=True) + ' ' for p in soup.select('.story__text p')])
 
                     # Altre informazioni dell'articolo
                     title = article.title

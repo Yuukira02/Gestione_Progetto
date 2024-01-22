@@ -1,8 +1,11 @@
 import os
 import re
+
+import nltk
 from newspaper import build
 from newspaper.article import ArticleException
 from bs4 import BeautifulSoup
+nltk.download('punkt')
 
 def clean_filename(filename):
     # Rimuovi i caratteri non consentiti nei nomi dei file
@@ -39,7 +42,7 @@ for category in categories:
 
                     # Estrai il testo dai tag <p> nella classe 'story__text'
                     soup = BeautifulSoup(article.html, 'html.parser')
-                    text_content = '\n'.join([p.get_text(strip=True) for p in soup.select('.story__text p')])
+                    text_content = ' '.join([p.get_text(strip=True) + ' ' for p in soup.select('.story__text p')])
 
                     # Altre informazioni dell'articolo
                     title = article.title

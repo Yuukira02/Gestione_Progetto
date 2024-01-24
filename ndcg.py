@@ -6,6 +6,7 @@ from sklearn.metrics import dcg_score
 import numpy as np
 
 # VARIABILI GLOBALI NECESSARIE. TO-DO: Ad un utilizzo più ampio, renderemo la lettura del file benchmark.txt più scalato
+
 # VANE: ho utilizzato un benchmark.txt che aveva valori NUM_QUERY = 2 e NUM_R_DOCS = 20
 # FATI: avrà un benchmark iniziale con 7 query (base) e 10 risultati per query.
 NUM_QUERY = 7
@@ -70,6 +71,7 @@ def init_scores(results, benchmark, index_of_q):
             scores[url] = benchmark[index_of_q].get(url)
         else:
             scores[url] = 0
+
     return scores
 
 
@@ -104,6 +106,7 @@ def main():
         dcg = dcg_score(rel_scores, gold_standard)
         idcg = dcg_score(gold_standard, gold_standard)
         ndcg = dcg / idcg
+
         print(f"Query numero {i}: {ndcg}")
         media += ndcg
 

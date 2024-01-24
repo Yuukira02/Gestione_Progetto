@@ -2,10 +2,11 @@ from whoosh.index import open_dir
 from whoosh.qparser.dateparse import DateParserPlugin
 from whoosh.qparser import QueryParser
 
-from sklearn.metrics import ndcg_score
+from sklearn.metrics import dcg_score
 import numpy as np
 
-# VARIABILI GLOBALI NECESSARIE. Ad un utilizzo più ampio, renderemo la lettura del file benchmark.txt più scalato
+# VARIABILI GLOBALI NECESSARIE. TO-DO: Ad un utilizzo più ampio, renderemo la lettura del file benchmark.txt più scalato
+
 # VANE: ho utilizzato un benchmark.txt che aveva valori NUM_QUERY = 2 e NUM_R_DOCS = 20
 # FATI: avrà un benchmark iniziale con 7 query (base) e 10 risultati per query.
 NUM_QUERY = 7
@@ -22,7 +23,7 @@ def execute_query(query):
     parser.add_plugin(DateParserPlugin())
     query = parser.parse(query)
 
-    results = searcher.search(query, limit=None)
+    results = searcher.search(query, limit=10)
     return results
 
 
@@ -58,19 +59,19 @@ def read_benchmark():
 
 
 # ALGORITMO CHE DATE LE RISPOSTE urls[10] ad UNA query, compara le risposte con il benchmark ed assegna un valore
-def init_scores(results, benchmark):
+def init_scores(results, benchmark, index_of_q):
     scores = {}
     urls = []
-    for i in range(len(results)):
+    for i in range(results.scored_length()):
         # equivale a results[i].get('url'), ossia accedere ad una lista di dizionari.
-        urls[i] = [results[i]['url']]
+        urls.append(results[i]['url'])
 
-    # len(urls) = NUM_DOCS
-    for e in range(len(urls)):
-        if urls[e] in benchmark[0].keys():
-            scores[urls[e]] = benchmark[0].get[urls[e]]
+    for url in urls:
+        if str(url) in benchmark[index_of_q]:
+            scores[url] = benchmark[index_of_q].get(url)
         else:
-            scores[urls[e]] = 0
+            scores[url] = 0
+
     return scores
 
 
@@ -83,26 +84,29 @@ def main():
 
         # estrai i risultati per la query i di 7 (=NUM_QUERY)
         results = execute_query(query[i])
-        scores = init_scores(results, benchmark)
+        rel_scores = init_scores(results, benchmark, i)
 
         # estraggo i valori (url, val) dalla query i-esima dal benchmark
-        true_relevance = benchmark[i]
+        gold_standard = benchmark[i]
+
+        # controllo: se i documenti recuperati non sono abbastanza,
+        # se non sono abbastanza, paddo i rimanenti valori con 0
+        if len(results) < NUM_R_DOCS:
+            rel_scores = list(rel_scores.values())
+            rel_scores = (rel_scores + NUM_R_DOCS * [0])[:NUM_R_DOCS]
+        else:
+            rel_scores = list(rel_scores.values())
+
         # poi ne estraggo semplicemente la lista di valori ideali per confrontarlo con i valori reali
         # NOTA: effettuiamo conversione con numpy
-        true_relevance = np.asarray([list(true_relevance.values())])
-        scores = np.asarray([list(scores.values())])
+        gold_standard = np.asarray([list(gold_standard.values())])
+        rel_scores = np.asarray([rel_scores])
 
-        # controllo che scores abbia risultati numerici come true_relevance:
-        # (controllo che elimineremo con la benchmark giusta)
-        # print(scores)
+        # print(f"Calcoliamo la ndg di REALI: {rel_scores}\ne di IDEALI: {gold_standard}")
+        dcg = dcg_score(rel_scores, gold_standard)
+        idcg = dcg_score(gold_standard, gold_standard)
+        ndcg = dcg / idcg
 
-        # questo è un controllo dummy: se i documenti recuperati non sono abbastanza,
-        # non facciamo alcun controllo reale.
-        # Infatti, inizializziamo scores a true_relevance, che è come confrontare true_relevance con sè stesso.
-        if len(results) < NUM_R_DOCS:
-            scores = true_relevance
-
-        ndcg = ndcg_score(true_relevance, scores)
         print(f"Query numero {i}: {ndcg}")
         media += ndcg
 

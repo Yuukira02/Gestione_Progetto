@@ -1,9 +1,7 @@
 from whoosh.analysis import LanguageAnalyzer, IntraWordFilter
-from whoosh.index import create_in, open_dir
+from whoosh.index import create_in
 from whoosh.fields import *
 import os
-
-from whoosh.qparser.dateparse import DateParserPlugin
 
 
 # TO-DO: sarebbe bello renderlo una classe.
@@ -20,7 +18,7 @@ def format_date(date):
     return date
 
 
-def add_docs(writer):
+def add_docs(doc_writer):
     # let us open every textual file our dataset directory
     if not os.path.exists("notizie"):
         os.mkdir("notizie")
@@ -29,22 +27,20 @@ def add_docs(writer):
     for f in filelist:
         if f.endswith(".txt"):
             try:
-                fileobj = open(path + f, "r",encoding="utf8")
+                fileobj = open(path + f, "r", encoding="utf8")
             except Exception as e:
                 print(e)
                 exit()
 
-            title = fileobj.readline()
-            url = fileobj.readline()
+            title = fileobj.readline().removesuffix('\n')
+            url = fileobj.readline().removesuffix('\n')
             modtime = format_date(fileobj.readline())
-            content = fileobj.read()
+            content = fileobj.read().removesuffix('\n')
             fileobj.close()
-            writer.add_document(title=title, content=content, url=url, date=modtime)
-#            modtime = os.path.getmtime("polish-fables.txt")
+            doc_writer.add_document(title=title, content=content, url=url, date=modtime)
 
 
 # indexing
-# schema = Schema(title=TEXT(stored=True), content=TEXT(stored=False, analyzer=customAnalyzer()), url=ID(stored=True),
 schema = Schema(title=TEXT(stored=True), content=TEXT(analyzer=custom_analyzer()), url=ID(stored=True),
                 date=DATETIME(stored=True))
 
@@ -61,7 +57,3 @@ writer.commit()
 # Or([Term("content", "render"), And([Term("title", "shade"), Term("keyword", "animate")])])
 # ==
 # parser.parse(u"render OR (title:shade keyword:animate)")
-
-
-# ANALYZER:
-# schema = Schema(content=TEXT(analyzer=StemmingAnalyzer()))

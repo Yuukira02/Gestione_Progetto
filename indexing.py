@@ -1,10 +1,10 @@
 from whoosh.analysis import LanguageAnalyzer, IntraWordFilter
 from whoosh.index import create_in
 from whoosh.fields import *
+from transformers import pipeline
 import os
 
 
-# TO-DO: sarebbe bello renderlo una classe.
 def custom_analyzer():
     ana = LanguageAnalyzer("it") | IntraWordFilter(splitwords=True, splitnums=True, mergewords=False, mergenums=False)
     return ana
@@ -18,7 +18,20 @@ def format_date(date):
     return date
 
 
+def convert_predicted_sentiment(prediction):
+    first_value = int(prediction[0][0].get('label')[0])
+    second_value = int(prediction[0][1].get('label')[0])
+    if first_value + second_value == 3:
+        return -1
+    if first_value + second_value == 9:
+        return 1
+    else:
+        return 0
+
+
 def add_docs(doc_writer):
+    classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
+
     # let us open every textual file our dataset directory
     if not os.path.exists("notizie"):
         os.mkdir("notizie")
@@ -34,15 +47,17 @@ def add_docs(doc_writer):
 
             title = fileobj.readline().removesuffix('\n')
             url = fileobj.readline().removesuffix('\n')
-            modtime = format_date(fileobj.readline())
+            date = format_date(fileobj.readline())
             content = fileobj.read().removesuffix('\n')
+            prediction = classifier(title)
+            sentiment = convert_predicted_sentiment(prediction)
             fileobj.close()
-            doc_writer.add_document(title=title, content=content, url=url, date=modtime)
+            doc_writer.add_document(title=title, content=content, sentiment=sentiment, url=url, date=date)
 
 
 # indexing
-schema = Schema(title=TEXT(stored=True), content=TEXT(analyzer=custom_analyzer()), url=ID(stored=True),
-                date=DATETIME(stored=True))
+schema = Schema(title=TEXT(stored=True), content=TEXT(analyzer=custom_analyzer()), sentiment=NUMERIC(),
+                url=ID(stored=True), date=DATETIME(stored=True))
 
 if not os.path.exists("indexdir"):
     os.mkdir("indexdir")

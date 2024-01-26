@@ -3,7 +3,8 @@
 3- togliere dalla sentiment analysis della query la data, perche confonde il modello artificiale di analisi emotiva, e lo confonde pure tanto
 4- algoritmo MAP
 5- finire GUI
+6- finire benchmark (senza url ripetuti mi raccomandissimo!!!)
 
-6- A PROGETTO FINITO, far provare a qualcun'altro il progetto cosi da fare un readme coi controcoglioni
+7- A PROGETTO FINITO, far provare a qualcun'altro il progetto cosi da fare un readme coi controcoglioni
 
 BUON LAVORO A NOI DUE <3

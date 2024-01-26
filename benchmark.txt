@@ -106,7 +106,7 @@ Deputati NOT (Senato OR Governo)
 1 https://torino.repubblica.it/cronaca/2024/01/22/news/pablito_morello_caposcorta_delmastro_congedo-421948242/
 1 https://parma.repubblica.it/cronaca/2024/01/19/news/sicurezza_15_militari_in_arrivo_a_parma-421918675/
 1 https://www.repubblica.it/spettacoli/people/2024/01/24/news/valeria_marini_gerolamo_cangiano_fratelli_ditalia_relazione-421967060/
-1 https://www.repubblica.it/politica/2024/01/24/news/scuola_della_magistratura_il_csm_si_spacca_la_destra_laica_e_delle_toghe_si_astiene_su_sciarra-421968165/\n'}>
+1 https://www.quotidiano.net/esteri/elezioni-usa-biden-dietro-nei-sondaggi-lombra-lunga-degli-obama-michelle-e-lanti-trump-77f78923
 
 Modena OR Bologna (NOT calcio)
 5 https://bologna.repubblica.it/cronaca/2024/01/24/news/bologna_sciopero_trasporto_pubblico_ecco_le_corse_garantite-421965605/

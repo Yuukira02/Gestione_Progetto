@@ -1,30 +1,14 @@
-from whoosh.index import open_dir
-from whoosh.qparser.dateparse import DateParserPlugin
-from whoosh.qparser import QueryParser
+from transformers import pipeline
 
+from searcher import execute_query
 from sklearn.metrics import dcg_score
 import numpy as np
 
 # VARIABILI GLOBALI NECESSARIE. TO-DO: Ad un utilizzo più ampio, renderemo la lettura del file benchmark.txt più scalato
-
 # VANE: ho utilizzato un benchmark.txt che aveva valori NUM_QUERY = 2 e NUM_R_DOCS = 20
 # FATI: avrà un benchmark iniziale con 7 query (base) e 10 risultati per query.
-NUM_QUERY = 7
-NUM_R_DOCS = 10
-
-
-# TO-DO: from searcher import execute_query
-def execute_query(query):
-    """ALGORITMO CHE DATA UNA QUERY ESEGUE LE RISPOSTE"""
-    ix = open_dir("indexdir")
-    searcher = ix.searcher()
-
-    parser = QueryParser("content", ix.schema)
-    parser.add_plugin(DateParserPlugin())
-    query = parser.parse(query)
-
-    results = searcher.search(query, limit=10)
-    return results
+NUM_QUERY = 10
+NUM_R_DOCS = 20
 
 
 # ALGORITMO CHE LEGGE LA CLASSE BENCHMARK[15 query[20 url]]
@@ -59,23 +43,25 @@ def read_benchmark():
 
 
 # ALGORITMO CHE DATE LE RISPOSTE urls[10] ad UNA query, compara le risposte con il benchmark ed assegna un valore
-def init_scores(results, benchmark, index_of_q):
+def init_scores(eng_results, bench_results):
     scores = {}
     urls = []
-    for i in range(results.scored_length()):
-        # equivale a results[i].get('url'), ossia accedere ad una lista di dizionari.
-        urls.append(results[i]['url'])
+    for i in range(eng_results.scored_length()):
+        # equivale a eng_results[i].get('url'), ossia accedere ad una lista di dizionari.
+        urls.append(eng_results[i]['url'])
 
     for url in urls:
-        if str(url) in benchmark[index_of_q]:
-            scores[url] = benchmark[index_of_q].get(url)
+        if str(url) in bench_results:
+            scores[url] = bench_results.get(url)
         else:
             scores[url] = 0
-
     return scores
 
 
 def main():
+    classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
+    V2 = False
+    V3 = False
     query, benchmark = read_benchmark()
     media = 0
 
@@ -83,30 +69,28 @@ def main():
     for i in range(len(benchmark)):
 
         # estrai i risultati per la query i di 7 (=NUM_QUERY)
-        results = execute_query(query[i])
-        rel_scores = init_scores(results, benchmark, i)
+        results = execute_query(query[i], classifier, query_expansion=V2, sentiment_analysis=V3)
+        rel_scores = init_scores(results, benchmark[i])
 
         # estraggo i valori (url, val) dalla query i-esima dal benchmark
         gold_standard = benchmark[i]
 
         # controllo: se i documenti recuperati non sono abbastanza,
         # se non sono abbastanza, paddo i rimanenti valori con 0
-        if len(results) < NUM_R_DOCS:
-            rel_scores = list(rel_scores.values())
-            rel_scores = (rel_scores + NUM_R_DOCS * [0])[:NUM_R_DOCS]
-        else:
-            rel_scores = list(rel_scores.values())
+        rel_scores = list(rel_scores.values())
+        rel_scores = (rel_scores + NUM_R_DOCS * [0])[:NUM_R_DOCS]
 
         # poi ne estraggo semplicemente la lista di valori ideali per confrontarlo con i valori reali
         # NOTA: effettuiamo conversione con numpy
         gold_standard = np.asarray([list(gold_standard.values())])
         rel_scores = np.asarray([rel_scores])
+        print(rel_scores)
+        print(gold_standard)
 
         # print(f"Calcoliamo la ndg di REALI: {rel_scores}\ne di IDEALI: {gold_standard}")
         dcg = dcg_score(rel_scores, gold_standard)
         idcg = dcg_score(gold_standard, gold_standard)
         ndcg = dcg / idcg
-
         print(f"Query numero {i}: {ndcg}")
         media += ndcg
 
@@ -116,4 +100,5 @@ def main():
     print(f"\nNDCG dell'intero IR: {media}")
 
 
-main()
+if __name__ == "__main__":
+    main()

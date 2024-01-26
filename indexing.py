@@ -21,9 +21,9 @@ def format_date(date):
 def convert_predicted_sentiment(prediction):
     first_value = int(prediction[0][0].get('label')[0])
     second_value = int(prediction[0][1].get('label')[0])
-    if first_value + second_value == 3:
+    if first_value + second_value <= 4:
         return -1
-    if first_value + second_value == 9:
+    if first_value + second_value >= 8:
         return 1
     else:
         return 0
@@ -35,12 +35,12 @@ def add_docs(doc_writer):
     # let us open every textual file our dataset directory
     if not os.path.exists("notizie"):
         os.mkdir("notizie")
-    path = "notizie\\"
+    path = "notizie"
     filelist = os.listdir(path)
     for f in filelist:
         if f.endswith(".txt"):
             try:
-                fileobj = open(path + f, "r", encoding="utf8")
+                fileobj = open(os.path.join(path, f), "r", encoding="utf8")
             except Exception as e:
                 print(e)
                 exit()
@@ -56,19 +56,23 @@ def add_docs(doc_writer):
 
 
 # indexing
-schema = Schema(title=TEXT(stored=True), content=TEXT(analyzer=custom_analyzer()), sentiment=NUMERIC(),
-                url=ID(stored=True), date=DATETIME(stored=True))
+def create_index():
+    schema = Schema(title=TEXT(stored=True), content=TEXT(analyzer=custom_analyzer()), sentiment=NUMERIC(),
+                    url=ID(stored=True), date=DATETIME(stored=True))
 
-if not os.path.exists("indexdir"):
-    os.mkdir("indexdir")
+    if not os.path.exists("indexdir"):
+        os.mkdir("indexdir")
 
-ix = create_in("indexdir", schema)
-writer = ix.writer()
+    ix = create_in("indexdir", schema)
+    writer = ix.writer()
 
-add_docs(writer)
-writer.commit()
+    add_docs(writer)
+    writer.commit()
 
 # NOTA per la query: (diretta vs parsata):
 # Or([Term("content", "render"), And([Term("title", "shade"), Term("keyword", "animate")])])
 # ==
 # parser.parse(u"render OR (title:shade keyword:animate)")
+
+if __name__ == "__main__":
+    create_index()

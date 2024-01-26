@@ -3,7 +3,6 @@ Omicidi
 6 https://www.ilrestodelcarlino.it/pesaro/cronaca/delitto-bruzzese-un-miliardo-di-chiamate-ba5cd454
 6 https://milano.repubblica.it/cronaca/2024/01/22/news/oltrona_san_mamette_manuel_millefanti_ucciso_coltellate-421941079/
 5 https://roma.repubblica.it/cronaca/2024/01/24/news/omicidio_14enne_alexandru_ivan_fermato_terzo_uomo_petrov-421972146/
-5 https://www.repubblica.it/cronaca/2024/01/20/news/anica_panfile_stordita_con_la_cocaina_e_uccisa_dopo_una_lite_convalidato_il_fermo_per_il_datore_di_lavoro-421928163/
 5 https://www.quotidiano.net/esteri/alain-delon-ex-compagna-denuncia-figli-tentato-omicidio-t7ek890z
 5 https://milano.repubblica.it/cronaca/2024/01/18/news/maria_filia_investita_auto_morta_processo-421914722/
 5 https://milano.repubblica.it/cronaca/2024/01/23/news/omicidio_manuel_millefanti_confessa_luca_de_bonis_selfie-421956515/
@@ -18,6 +17,7 @@ Omicidi
 3 https://palermo.repubblica.it/cronaca/2023/12/31/news/giuseppe_fava_ucciso_quaranta_anni_fa-421789552/
 2 https://palermo.repubblica.it/cronaca/2024/01/14/news/matteo_messina_denaro_diari_figlia-421872480/
 2 https://www.repubblica.it/venerdi/2024/01/11/news/lerede_di_messina_denaro_e_tra_noi-421851637/
+2 https://www.repubblica.it/cultura/2024/01/18/news/storie_di_storia__47_gli_houthi_dello_yemen-421911799/
 1 https://napoli.repubblica.it/cronaca/2024/01/22/news/napoli_garzo_presidente_tribunale_buonismo_giovani_camorra-421938292/
 
 Giorgi*
@@ -64,7 +64,7 @@ Guerra AND (date=2023 OR date=2024)
 1 https://www.repubblica.it/green-and-blue/dossier/viaggio-al-centro-del-futuro-ok/2023/12/27/news/nel_2024_si_tornera_a_volare_come_prima_della_pandemia_ma_leuropa_rallenta-421756275/
 1 https://bari.repubblica.it/cronaca/2024/01/09/news/turismo_quasi_10_milioni_di_passeggeri_nel_2023_tra_bari_e_brindisi_record_aeroporti_di_puglia-421837110/
 
-Femminicidio OR Cecchettin ==> DA RIGUARDARE
+Femminicidio OR Cecchettin
 5 https://milano.repubblica.it/cronaca/2024/01/19/news/femminicidio_elena_giulia_cecchettin_chiara_tramontano-421919729/
 5 https://firenze.repubblica.it/cronaca/2023/12/13/news/violenza_genere_soluzioni_cecchetin-421649649/
 4 https://www.quotidiano.net/cronaca/delitto-cecchettin-il-papa-di-giulia-si-affida-a-unagenzia-per-scrittori-ipotesi-libro-e-fiction-eaf0af55
@@ -73,24 +73,24 @@ Femminicidio OR Cecchettin ==> DA RIGUARDARE
 4 https://firenze.repubblica.it/cronaca/2023/12/13/news/cecchetin_violenza_genere_femminicidio-421649660/
 4 https://milano.repubblica.it/cronaca/2024/01/18/news/alessandro_impagnatiello_processo_aula_oggi-421909125/
 4 https://roma.repubblica.it/cronaca/2024/01/22/news/per_sara_giulia_e_le_altre_mai_piu_femminicidi_la_prevenzione_contro_la_violenza_di_genere_inizia_dalla_scuola-421949760/
-4 https://www.quotidiano.net/politica/convegno-sull-aborto-ospitato-alla-camera-e-bufera-simone-billi-lqbtz254
+4 https://bari.repubblica.it/cronaca/2024/01/20/news/giorno_della_memoria_perche_la_shoah_va_raccontata_nelle_scuole-421928736/
+3 https://www.repubblica.it/cultura/2024/01/10/news/il_corpo_delle_donne_serie_violenza_le_parole_che_feriscono_donatella_di_pietrantonio-421847193/
 3 https://palermo.repubblica.it/cronaca/2024/01/17/news/femminicidi_sicilia_lettera_vittima_legge_regione-421895005/
 3 https://www.ilrestodelcarlino.it/venezia/cronaca/auto-filippo-turetta-analisi-ris-sangue-m1omf654
 3 https://napoli.repubblica.it/commenti/2024/01/14/news/quei_maschi_che_non_tollerano_un_rifiuto-421873986/
 3 https://napoli.repubblica.it/cronaca/2024/01/23/news/agropoli_omicidio_suicidio_annalisa_rizzo_vincenzo_carnicelli_ultime_notizie-421953097/
 3 https://bologna.repubblica.it/cronaca/2024/01/23/news/femminicidio_matteuzzi_la_difesa_tempesta_emotiva_a_padovani_servono_cure-421951423/
 2 https://napoli.repubblica.it/cronaca/2024/01/22/news/vincenzo_carnicelli_annalisa_rizzo_omicidio_agropoli-421944698/
-2 https://bologna.repubblica.it/cronaca/2024/01/19/news/femminicidio_alessandra_matteuzzi_odio_social_cinque_hater_a_processo_bologna-421920159/
 2 https://www.repubblica.it/cronaca/2024/01/24/news/quel_professore_deve_dimettersi_non_puo_difendere_filippo_turetta_petizione_contro_giovanni_caruso_docente_di_diritto_p-421968170/
-2 https://palermo.repubblica.it/cronaca/2024/01/18/news/femminicidi_vertice_sulle_assunzioni_degli_orfani_la_regione_avvia_la_conta_dei_casi-421905469/
 2 https://palermo.repubblica.it/cronaca/2024/01/24/news/nasce_onlus_marisa_leo_lotta_femminicidi-421968530/
 1 https://www.repubblica.it/cultura/2024/01/13/news/le_scrittrici_italiane_unite_contro_la_violenza_di_genere-421866145/
+1 https://bari.repubblica.it/cronaca/2024/01/20/news/sport_io_dalla_danza_al_kickboxing_contro_differenze_di_genere_marlen_cirignaco_trionfo_golden_glove_cup-421928706/
 
 Deputati NOT (Senato OR Governo)
 5 https://www.ilrestodelcarlino.it/reggio-emilia/cronaca/nessuna-scuola-ha-aderito-al-progetto-liceo-made-in-italy-fa760f25
 5 https://torino.repubblica.it/cronaca/2024/01/23/news/pozzolo_stub_delmastro_scorta_sparo_capodanno-421949895/
 5 https://www.quotidiano.net/esteri/raid-di-tel-aviv-a-khan-yunis-almeno-50-morti-e-100-feriti-1c4af49d
-4 https://palermo.repubblica.it/cronaca/2024/01/21/news/enna_branco_minori_insulta_donna_con_frasi_razziste_e_laggredisce-421936447/
+1 https://www.repubblica.it/politica/2024/01/24/news/scuola_della_magistratura_il_csm_si_spacca_la_destra_laica_e_delle_toghe_si_astiene_su_sciarra-421968165/
 4 https://www.quotidiano.net/politica/convegno-sull-aborto-ospitato-alla-camera-e-bufera-simone-billi-lqbtz254
 4 https://torino.repubblica.it/cronaca/2024/01/24/news/pozzolo_e_il_dubbio_sul_porto_darmi_non_poteva_andare_a_quella_festa_con_la_pistola-421964994/
 4 https://palermo.repubblica.it/cronaca/2024/01/18/news/femminicidi_vertice_sulle_assunzioni_degli_orfani_la_regione_avvia_la_conta_dei_casi-421905469/
@@ -106,7 +106,7 @@ Deputati NOT (Senato OR Governo)
 1 https://torino.repubblica.it/cronaca/2024/01/22/news/pablito_morello_caposcorta_delmastro_congedo-421948242/
 1 https://parma.repubblica.it/cronaca/2024/01/19/news/sicurezza_15_militari_in_arrivo_a_parma-421918675/
 1 https://www.repubblica.it/spettacoli/people/2024/01/24/news/valeria_marini_gerolamo_cangiano_fratelli_ditalia_relazione-421967060/
-1 https://www.repubblica.it/rubriche/l-amaca/2024/01/23/news/amaca_michele_serra_mercoledi_24_gennaio_2024-421963155/
+1 https://www.repubblica.it/politica/2024/01/24/news/scuola_della_magistratura_il_csm_si_spacca_la_destra_laica_e_delle_toghe_si_astiene_su_sciarra-421968165/\n'}>
 
 Modena OR Bologna (NOT calcio)
 5 https://bologna.repubblica.it/cronaca/2024/01/24/news/bologna_sciopero_trasporto_pubblico_ecco_le_corse_garantite-421965605/
@@ -217,30 +217,3 @@ Ucraina AND Russia
 1 https://www.repubblica.it/cultura/2024/01/15/news/treccani_parole_anno_underdog_armocromia_famiglia_queer-421879954/
 1 https://www.repubblica.it/rubriche/monday-s-net/2024/01/24/news/zverev_yastremska_semifinale-421970708/
 1 https://napoli.repubblica.it/cronaca/2024/01/20/news/non_solo_golden_globe_e_sogno_oscar_oppenheimer_con_kennedy_kubrick_e_tanti_altri_nel_libro_dei_napoletani_francesco_dall-421928721/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

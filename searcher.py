@@ -60,7 +60,7 @@ def get_related_words(word):
     return list(related_words)
 
 
-def Correction(word):
+def correction(word):
     # Bypassa la correzione ortografica per la parola chiave "NOT"
     if word.upper() == 'NOT':
         return word
@@ -70,10 +70,8 @@ def Correction(word):
         return spell(word)
 
 
-def execute_query(original_query, classifier, query_expansion, sentiment_analysis, correct_spelling, synonim):
+def execute_query(original_query, classifier, sentiment_analysis, correct_spelling, synonym):
     """ALGORITMO CHE DATA UNA QUERY ESEGUE LE RISPOSTE"""
-
-    total = 0
 
     if not exists_in("indexdir"):
         print("Sto usando indexer da searcher")
@@ -83,20 +81,20 @@ def execute_query(original_query, classifier, query_expansion, sentiment_analysi
     searcher = ix.searcher()
     q = original_query
 
-    if query_expansion:
-        if correct_spelling == True:
-            # Applica la correzione ortografica solo per le parole non booleane
-            corrected_query = " ".join(Correction(word) for word in q.split())
-            q = corrected_query
 
-        if synonim == True:
-            # Ottieni sinonimi della parola inserita
-            synonyms = get_related_words(q)
+    if correct_spelling == True:
+        # Applica la correzione ortografica solo per le parole non booleane
+        corrected_query = " ".join(correction(word) for word in q.split())
+        q = corrected_query
 
-            # Aggiugni la parola originale e i sinonimi alla query
-            if len(synonyms) != 0:
-                q = q + " AND (" + f"{' OR '.join(synonyms)}" + ")"
-                print(q)  # Debug
+    if synonym == True:
+        # Ottieni sinonimi della parola inserita
+        synonyms = get_related_words(q)
+
+        # Aggiugni la parola originale e i sinonimi alla query
+        if len(synonyms) != 0:
+            q = q + " AND (" + f"{' OR '.join(synonyms)}" + ")"
+            print(q)  # Debug
 
     # se stiamo eseguendo la V3 dell'engine, esegui
     if sentiment_analysis:
@@ -117,7 +115,7 @@ def execute_query(original_query, classifier, query_expansion, sentiment_analysi
     q = parser.parse(q)
 
     # results = searcher.search(query, limit=20) || results = searcher.search(query, limit=None)
-    res = searcher.search(q, limit=None)
+    res = searcher.search(q, limit=20)
 
     # Formatta i risultati direttamente nella funzione
     formatted_results = []
@@ -130,14 +128,12 @@ def execute_query(original_query, classifier, query_expansion, sentiment_analysi
         if content is not None:
             #Snippet Articolo
             content = content[:100] + '...'
-            total +=1
         else:
             print("Snippet dell'Articolo non disponibile")
 
         formatted_result = f"Titolo: {title}\n{date}\n{content}\nURL: {url}\n\n"
         formatted_results.append(formatted_result)
 
-    print(f"Totale: {total}")
 
     return formatted_results
 
@@ -145,10 +141,9 @@ def execute_query(original_query, classifier, query_expansion, sentiment_analysi
 
 if __name__ == "__main__":
     classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
-    V2 = True
-    V3 = False
+    V3 = True
     query = input("Inserisci ciò che vuoi cercare (default: contenuto) \nSuggerito: 'Allarmante!': ")
-    results = execute_query(query, classifier, V2, V3, False, False)
+    results = execute_query(query, classifier, V3, False, False)
     for result in results:
         print(result)
 

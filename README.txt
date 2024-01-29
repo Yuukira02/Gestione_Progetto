@@ -1,5 +1,6 @@
 NOTE PER L'UTILIZZO: 
-- il progetto contiene transformers, pacchetto che si può utilizzare solo su ambiente virtuale. Per cui è raccomandato eseguire i file dentro a un ambiente virtuale. (ex: anaconda, conda list, conda info --envs, where transformers)
+- il progetto contiene transformers, pacchetto che si può utilizzare solo su ambiente virtuale. Per cui è raccomandato eseguire i file dentro a un ambiente virtuale. 
+Comandi utili per anaconda: conda list, conda info --envs, where transformers
 
 PACCHETTI DA INSTALLARE DA TERMINALE:
 pip install newspaper3k

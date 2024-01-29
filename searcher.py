@@ -113,37 +113,21 @@ def execute_query(original_query, classifier, sentiment_analysis, correct_spelli
     # parser = QueryParser("content", ix.schema)
     parser.add_plugin(DateParserPlugin())
     q = parser.parse(q)
+    print(q)
 
     # results = searcher.search(query, limit=20) || results = searcher.search(query, limit=None)
     res = searcher.search(q, limit=20)
 
-    # Formatta i risultati direttamente nella funzione
-    formatted_results = []
-    for result in res:
-        title = result.get('title')
-        date = result.get('date')
-        url = result.get('url')
-        content = result.get('content')
+    return res
 
-        if content is not None:
-            #Snippet Articolo
-            content = content[:100] + '...'
-        else:
-            print("Snippet dell'Articolo non disponibile")
-
-        formatted_result = f"Titolo: {title}\n{date}\n{content}\nURL: {url}\n\n"
-        formatted_results.append(formatted_result)
-
-
-    return formatted_results
 
 
 
 if __name__ == "__main__":
     classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
-    V3 = True
+    V3 = False
     query = input("Inserisci ciò che vuoi cercare (default: contenuto) \nSuggerito: 'Allarmante!': ")
-    results = execute_query(query, classifier, V3, False, False)
+    results = execute_query(query, classifier, V3, True, True)
     for result in results:
         print(result)
 

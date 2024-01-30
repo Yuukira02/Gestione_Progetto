@@ -1,109 +1,124 @@
+import tkinter as tk
+from tkinter import ttk
 from threading import Thread
 from transformers import pipeline
-from searcher import execute_query, correction
-import tkinter as tk
+from searcher import execute_query, correction, format_results
+from ttkthemes import ThemedStyle
 
 
 class SearchArticle:
-    total_results = 0
 
     def __init__(self, master):
         self.master = master
         master.title("Twinkle")
 
-        # Frame per contenere la query_entry e il search_button
-        self.entry_frame = tk.Frame(master, background='#FFDAB9')
-        self.entry_frame.grid(row=1, column=0, pady=10, padx=20)
+        style = ThemedStyle(master)
+        style.set_theme("ubuntu")
 
-        self.query_label = tk.Label(self.entry_frame, text="Cosa vuoi cercare?", background='#FFDAB9', pady=10,
-                                    font=("Times New Roman", 15, "bold"))
-        self.query_label.grid(row=0, column=0, columnspan=3, sticky="N")
+        master.grid_rowconfigure(1, weight=1)
+        master.grid_columnconfigure(0, weight=1)
 
-        self.query_entry = tk.Entry(self.entry_frame, width=40, font=("Arial", 12))
-        self.query_entry.grid(row=1, column=0, pady=10, ipady=10, padx=(0, 5), sticky="E")
+        self.entry_frame = ttk.Frame(master, padding=30)
+        self.entry_frame.grid(row=0, column=0, sticky="nsew")
 
-        self.search_button = tk.Button(self.entry_frame, text="Search", command=self.perform_search, width=10)
-        self.search_button.grid(row=1, column=1, pady=10, ipady=5, sticky="W")
+        self.status_label = ttk.Label(self.entry_frame, text="Twinkle", font=("Times New Roman", 40))
+        self.status_label.pack(pady=(0, 20))
+
+        self.query_entry = ttk.Entry(self.entry_frame, width=80, font=("Arial", 12))
+        self.query_entry.pack(side="top", pady=(5, 10), ipady=7, padx=10)
+
+        checkbox_button_frame = ttk.Frame(self.entry_frame)
+        checkbox_button_frame.pack(side="top", pady=5)
 
         self.check_spelling_var = tk.BooleanVar()
-        self.check_spelling = tk.Checkbutton(self.entry_frame, text="Correzione ortografica", background='#FFDAB9',
-                                             variable=self.check_spelling_var)
-        self.check_spelling.grid(row=2, column=0, pady=10, padx=10, sticky="W")
+        self.check_spelling = ttk.Checkbutton(checkbox_button_frame, text="Correzione ortografica",
+                                              variable=self.check_spelling_var, style="TCheckbutton")
+        self.check_spelling.pack(side="left", pady=5, padx=10)
 
+        # Sinonimi
         self.check_synonyms_var = tk.BooleanVar()
-        self.check_synonyms = tk.Checkbutton(self.entry_frame, text="Sinonimi", background='#FFDAB9',
-                                             variable=self.check_synonyms_var)
-        self.check_synonyms.grid(row=2, column=1, pady=10, padx=10, sticky="W")
+        self.check_synonyms = ttk.Checkbutton(checkbox_button_frame, text="Sinonimi", variable=self.check_synonyms_var,
+                                              style="TCheckbutton")
+        self.check_synonyms.pack(side="left", pady=5, padx=10)
 
-        self.correction_label = tk.Label(self.entry_frame, text="", background='#FFDAB9', pady=10, font=("Arial", 9))
-        self.correction_label.grid(row=3, column=2, pady=10, padx=10, sticky="N")
+        # sentymental
+        self.check_sentimental_var = tk.BooleanVar()
+        self.check_sentimental = ttk.Checkbutton(checkbox_button_frame, text="Analisi sentimentale",
+                                                 variable=self.check_sentimental_var, style="TCheckbutton")
+        self.check_sentimental.pack(side="left", pady=5, padx=10)
 
-        self.results_text = tk.Text(master, height=25, width=40, font=("Arial", 12))
-        self.results_text.grid(row=2, column=0, columnspan=4, padx=10, pady=10, sticky="WE")
+        # result text
+        self.results_text = tk.Text(master, height=20, width=40, font=("Arial", 12), background="white")
+        self.results_text.grid(row=1, column=0, padx=5, pady=5, sticky="NWE")
 
-        self.results_label = tk.Label(master, text="", background='#FFDAB9', font=("Arial", 12))
-        self.results_label.grid(row=3, column=0, columnspan=4, sticky="N", padx=20, pady=10)
+        # scrollbar
+        scrollbar = ttk.Scrollbar(master, command=self.results_text.yview)
+        scrollbar.grid(row=1, column=1, sticky='ns')
 
-        self.status_label = tk.Label(master, text="", background='#FFDAB9', pady=10, font=("Times New Roman", 12))
-        self.status_label.grid(row=4, column=0, columnspan=4, sticky="N", padx=20, pady=10)
+        self.results_text.config(yscrollcommand=scrollbar.set)
 
+        # Search button
+        self.search_button = ttk.Button(self.entry_frame, text="Search", command=self.perform_search, width=10)
+        self.search_button.pack(side="top", pady=(0, 10), ipady=5, padx=10)
+
+        self.correction_label = ttk.Label(checkbox_button_frame, text="", font=("Arial", 10))
+        self.correction_label.pack(side="top", pady=5, padx=5)
+
+        self.result_label = ttk.Label(master, text="", font=("Arial", 11))
+        self.result_label.grid(row=2, column=0, pady=5)
+
+        self.status_label.configure(style="TLabel")
 
     def perform_search(self):
-
-        self.status_label.config(text="Ricerca in corso...")
-        self.status_label.update()
+        self.result_label.config(text="Ricerca in corso...")
 
         def perform_search_thread():
-            classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
-            V3 = False #IMPLEMENTARE
+            classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment',
+                                  top_k=2)
             spelling = self.check_spelling_var.get()
             synonyms = self.check_synonyms_var.get()
-            results = []
+            sentimental = self.check_sentimental_var.get()
 
-            results = execute_query(self.query_entry.get(), classifier, V3, spelling, synonyms)
+            results = execute_query(self.query_entry.get(), classifier, sentimental, spelling, synonyms)
+            tot_score = results.scored_length()
 
-            # Esegui update_ui solo se la finestra è ancora aperta
+            formatted_results = format_results(results)
+
             if self.master.winfo_exists():
-                self.master.after(0, lambda: self.update_ui(results, spelling))
+                self.master.after(0, lambda: self.update_ui(formatted_results, spelling, tot_score))
 
         search_thread = Thread(target=perform_search_thread)
         search_thread.start()
 
-    def update_ui(self, results, spelling):
-        # Pulisci l'area dei risultati
+    def update_ui(self, formatted_results, spelling, tot_score):
         self.results_text.delete(1.0, tk.END)
 
-        if results:
-            for result in results:
+        if formatted_results:
+            for result in formatted_results:
                 self.results_text.insert(tk.END, result)
         else:
             self.results_text.insert(tk.END, "Nessun risultato trovato.")
 
-        # Aggiorna la label dei risultati totali (variabile di classe) in modo atomico
-        self.results_label.config(text=f"Risultati totali: {len(results)}") #LEN DA CAMBIARE!!!!!!!!
-        self.status_label.config(text="Ricerca completata")
+        # self.result_label.config(text=f"Risultati totali: {len(formatted_results)}")
+        self.result_label.config(text=f"Ricerca completata\n Risultati totali: {tot_score}")
 
-
-        # Aggiorna la label di correzione ortografica solo se l'opzione è abilitata
-        corrected_query = self.correct_label(self.query_entry.get()) #QUI BARIAMO
+        corrected_query = self.correct_label(self.query_entry.get())
         if spelling:
             if corrected_query != self.query_entry.get():
-                self.correction_label.config(text=f"Risultati per: {corrected_query}")
+                self.correction_label.config(text=f"Forse cercavi: {corrected_query}")
             else:
                 self.correction_label.config(text="")
         else:
-            self.correction_label.config(text=f"Forse cervavi: {corrected_query}")
+            self.correction_label.config(text="")
 
-    def correct_label(self, query):
-        # Implementa la correzione ortografica qui (se necessario)
-        # In questo esempio, utilizzo la funzione bypass_correction già presente nel tuo codice
+    @staticmethod
+    def correct_label(query):
         return " ".join(correction(word) for word in query.split())
 
 
 if __name__ == "__main__":
     window = tk.Tk()
-    window.configure(background='#FFDAB9')
     window.geometry("1200x550")
-    window.grid_columnconfigure(0, weight=1)
+    window.grid_columnconfigure(0, weight=2)
     app = SearchArticle(window)
     window.mainloop()

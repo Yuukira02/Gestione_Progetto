@@ -7,7 +7,7 @@ pip install transformers
 pip install newspaper3k
 pip install autocorrect
 pip install pytorch
-
+pip install ttkthemes
 
 in una cartella (che chiameremo di_lavoro), estrarre il file .7z in modo che abbia la sottodirectory "notizie", con tutti i file del motore di ricerca. 
 Dopo di ciò, scaricarsi nella directory di_lavoro i file della GUI (FactsNews), il searcher.py e indexing.py

@@ -2,11 +2,30 @@ import re
 import nltk
 from whoosh.index import open_dir, exists_in
 from autocorrect import Speller
-from whoosh.qparser import QueryParser, MultifieldParser
+from whoosh.qparser import MultifieldParser
 from whoosh.qparser.dateparse import DateParserPlugin
 from nltk.corpus import wordnet as wn
 from transformers import pipeline
 from indexing import convert_predicted_sentiment, create_index
+
+
+def format_results(res):
+    formatted_results = []
+    for r in res:
+        title = r.get('title')
+        date = r.get('date')
+        url = r.get('url')
+        content = r.get('content')
+
+        if content is not None:
+            # Snippet Articolo
+            content = content[:100] + '...'
+        else:
+            print("Snippet dell'Articolo non disponibile")
+
+        formatted_result = f"Titolo: {title}\n{date}\n{content}\nURL: {url}\n\n"
+        formatted_results.append(formatted_result)
+    return formatted_results
 
 
 def disambiguate_terms(terms):
@@ -14,11 +33,10 @@ def disambiguate_terms(terms):
     try:
         # Prova a cercare il corpus di WordNet
         nltk.data.find('corpora/wordnet')
-    except LookupError as e:
+    except LookupError:
         # Se non trova il corpus, scaricalo
         nltk.download('wordnet')
 
-    terms = re.split(',|_|-|!| OR | NOT | AND |title:|content:|date:|sentiment:| ', terms)
     related_words = set()
     for t_i in terms:  # t_i is the target term
         sel_sense = None
@@ -47,13 +65,13 @@ def disambiguate_terms(terms):
 def get_related_words(word):
     related_words = set()
 
-    tokens = word.split()
+    tokens = re.split(',|_|-|!| OR | NOT | AND |title:|content:|date:|sentiment:| ', word)
     if len(tokens) > 1:
         # Estendi con synset disambiguati dal contesto
-        related_words = disambiguate_terms(word)
+        related_words = disambiguate_terms(tokens)
     else:
         # Aggiungi sinonimi
-        for syn in wn.synsets(word, pos=wn.NOUN, lang='ita'):
+        for syn in wn.synsets(tokens, pos=wn.NOUN, lang='ita'):
             for lemma in syn.lemmas('ita'):
                 related_words.add(lemma.name())
 
@@ -81,13 +99,12 @@ def execute_query(original_query, classifier, sentiment_analysis, correct_spelli
     searcher = ix.searcher()
     q = original_query
 
-
-    if correct_spelling == True:
+    if correct_spelling:
         # Applica la correzione ortografica solo per le parole non booleane
         corrected_query = " ".join(correction(word) for word in q.split())
         q = corrected_query
 
-    if synonym == True:
+    if synonym:
         # Ottieni sinonimi della parola inserita
         synonyms = get_related_words(q)
 
@@ -105,45 +122,29 @@ def execute_query(original_query, classifier, sentiment_analysis, correct_spelli
             print(sentiment)
 
             if sentiment == 1:
-                q += " AND (sentiment:1 OR sentiment:0)"
+                q += " AND (sentiment:1)"
             if sentiment == -1:
-                q += " AND (sentiment:-1 OR sentiment:0)"
+                q += " AND (sentiment:-1)"
+            if sentiment == 0:
+                q += " AND (sentiment:0"
             print(q)
     parser = MultifieldParser(["title", "content"], ix.schema)
-    # parser = QueryParser("content", ix.schema)
     parser.add_plugin(DateParserPlugin())
     q = parser.parse(q)
 
-    # results = searcher.search(query, limit=20) || results = searcher.search(query, limit=None)
-    res = searcher.search(q, limit=20)
+    res = searcher.search(q, limit=None)
 
     # Formatta i risultati direttamente nella funzione
-    formatted_results = []
-    for result in res:
-        title = result.get('title')
-        date = result.get('date')
-        url = result.get('url')
-        content = result.get('content')
+    # res = format_results(res)
 
-        if content is not None:
-            #Snippet Articolo
-            content = content[:100] + '...'
-        else:
-            print("Snippet dell'Articolo non disponibile")
-
-        formatted_result = f"Titolo: {title}\n{date}\n{content}\nURL: {url}\n\n"
-        formatted_results.append(formatted_result)
-
-
-    return formatted_results
-
+    return res
 
 
 if __name__ == "__main__":
-    classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
+    sentiment_classifier = pipeline("text-classification",
+                                    model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
     V3 = True
     query = input("Inserisci ciò che vuoi cercare (default: contenuto) \nSuggerito: 'Allarmante!': ")
-    results = execute_query(query, classifier, V3, False, False)
+    results = execute_query(query, sentiment_classifier, V3, False, False)
     for result in results:
-        print(result)
-
+        print(result['url'])

@@ -35,7 +35,7 @@ def disambiguate_terms(terms):
         nltk.data.find('corpora/wordnet')
     except LookupError:
         # Se non trova il corpus, scaricalo
-        nltk.download('wordnet')
+        nltk.download('wordnet', quiet=True)
 
     related_words = set()
     for t_i in terms:  # t_i is the target term

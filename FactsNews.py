@@ -2,8 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from threading import Thread
 from transformers import pipeline
-from searcher import execute_query, correction
+from searcher import execute_query, correction, format_results
 from ttkthemes import ThemedStyle
+
 
 class SearchArticle:
 
@@ -20,27 +21,30 @@ class SearchArticle:
         self.entry_frame = ttk.Frame(master, padding=30)
         self.entry_frame.grid(row=0, column=0, sticky="nsew")
 
-        self.status_label = ttk.Label(self.entry_frame, text="Twinkle",font=("Times New Roman", 40))
+        self.status_label = ttk.Label(self.entry_frame, text="Twinkle", font=("Times New Roman", 40))
         self.status_label.pack(pady=(0, 20))
 
-        self.query_entry = ttk.Entry(self.entry_frame ,width=80, font=("Arial", 12))
+        self.query_entry = ttk.Entry(self.entry_frame, width=80, font=("Arial", 12))
         self.query_entry.pack(side="top", pady=(5, 10), ipady=7, padx=10)
 
         checkbox_button_frame = ttk.Frame(self.entry_frame)
         checkbox_button_frame.pack(side="top", pady=5)
 
         self.check_spelling_var = tk.BooleanVar()
-        self.check_spelling = ttk.Checkbutton(checkbox_button_frame, text="Correzione ortografica",variable=self.check_spelling_var, style="TCheckbutton")
+        self.check_spelling = ttk.Checkbutton(checkbox_button_frame, text="Correzione ortografica",
+                                              variable=self.check_spelling_var, style="TCheckbutton")
         self.check_spelling.pack(side="left", pady=5, padx=10)
 
-        #Sinonimi
+        # Sinonimi
         self.check_synonyms_var = tk.BooleanVar()
-        self.check_synonyms = ttk.Checkbutton(checkbox_button_frame, text="Sinonimi", variable=self.check_synonyms_var,style="TCheckbutton")
+        self.check_synonyms = ttk.Checkbutton(checkbox_button_frame, text="Sinonimi", variable=self.check_synonyms_var,
+                                              style="TCheckbutton")
         self.check_synonyms.pack(side="left", pady=5, padx=10)
 
-        #sentymental
+        # sentymental
         self.check_sentimental_var = tk.BooleanVar()
-        self.check_sentimental = ttk.Checkbutton(checkbox_button_frame, text="Sentymental", variable=self.check_sentimental_var,style="TCheckbutton")
+        self.check_sentimental = ttk.Checkbutton(checkbox_button_frame, text="Analisi sentimentale",
+                                                 variable=self.check_sentimental_var, style="TCheckbutton")
         self.check_sentimental.pack(side="left", pady=5, padx=10)
 
         # result text
@@ -53,7 +57,7 @@ class SearchArticle:
 
         self.results_text.config(yscrollcommand=scrollbar.set)
 
-        #Search button
+        # Search button
         self.search_button = ttk.Button(self.entry_frame, text="Search", command=self.perform_search, width=10)
         self.search_button.pack(side="top", pady=(0, 10), ipady=5, padx=10)
 
@@ -65,39 +69,22 @@ class SearchArticle:
 
         self.status_label.configure(style="TLabel")
 
-
-
     def perform_search(self):
         self.result_label.config(text="Ricerca in corso...")
 
         def perform_search_thread():
-            classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment', top_k=2)
+            classifier = pipeline("text-classification", model='nlptown/bert-base-multilingual-uncased-sentiment',
+                                  top_k=2)
             spelling = self.check_spelling_var.get()
             synonyms = self.check_synonyms_var.get()
             sentimental = self.check_sentimental_var.get()
+
             results = execute_query(self.query_entry.get(), classifier, sentimental, spelling, synonyms)
 
-            tot_score = results.scored_length()
-
-            formatted_results = []
-            for result in results:
-                title = result.get('title')
-                date = result.get('date')
-                url = result.get('url')
-                content = result.get('content')
-
-                if content is not None:
-                    # Snippet Articolo
-                    content = content[:100] + '...'
-                else:
-                    print("Snippet dell'Articolo non disponibile")
-
-                formatted_result = f"Articolo: {title}\n{content}\n{date}\n{url}\n\n"
-                formatted_results.append(formatted_result)
+            formatted_results = format_results(results)
 
             if self.master.winfo_exists():
-                self.master.after(0, lambda: self.update_ui(formatted_results, spelling, tot_score))
-
+                self.master.after(0, lambda: self.update_ui(formatted_results, spelling, results.scored_length()))
 
         search_thread = Thread(target=perform_search_thread)
         search_thread.start()
@@ -111,11 +98,11 @@ class SearchArticle:
         else:
             self.results_text.insert(tk.END, "Nessun risultato trovato.")
 
-        #self.result_label.config(text=f"Risultati totali: {len(formatted_results)}")
+        # self.result_label.config(text=f"Risultati totali: {len(formatted_results)}")
         self.result_label.config(text=f"Ricerca completata\n Risultati totali: {tot_score}")
 
-        corrected_query = self.correct_label(self.query_entry.get())
         if spelling:
+            corrected_query = self.correct_label(self.query_entry.get())
             if corrected_query != self.query_entry.get():
                 self.correction_label.config(text=f"Forse cercavi: {corrected_query}")
             else:
@@ -123,8 +110,10 @@ class SearchArticle:
         else:
             self.correction_label.config(text="")
 
-    def correct_label(self, query):
+    @staticmethod
+    def correct_label(query):
         return " ".join(correction(word) for word in query.split())
+
 
 if __name__ == "__main__":
     window = tk.Tk()

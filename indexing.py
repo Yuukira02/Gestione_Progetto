@@ -57,15 +57,12 @@ def add_docs(doc_writer):
             sentiment = convert_predicted_sentiment(prediction)
             fileobj.close()
 
-            print(f"Title: {title}\nContent: {content}...\nSentiment: {sentiment}\nURL: {url}\nDate: {date}\n")  # Add this line for debugging
-
-
             doc_writer.add_document(title=title, content=content, sentiment=sentiment, url=url, date=date)
 
 
 # indexing
 def create_index():
-    schema = Schema(title=TEXT(stored=True), content=TEXT(stored=True, analyzer=custom_analyzer()), sentiment=NUMERIC(),
+    schema = Schema(title=TEXT(stored=True, analyzer=custom_analyzer()), content=TEXT(stored=True, analyzer=custom_analyzer()), sentiment=NUMERIC(),
                     url=ID(stored=True), date=DATETIME(stored=True))
 
     if not os.path.exists("indexdir"):

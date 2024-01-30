@@ -241,26 +241,29 @@ Scola OR Istuzione
 1 https://www.repubblica.it/cronaca/2024/01/22/news/verona_nelledicola_che_offre_nipoti_in_affitto_laiuto_agli_over_70_con_le_pratiche_burocratiche_online-421943083/
 
 Scuola AND sentiment:1
-https://bologna.repubblica.it/cronaca/2024/01/19/news/e_morta_silvia_brunini_preside_bologna-421919955/
-https://palermo.repubblica.it/societa/2023/11/12/news/giusi_cataldo_intervista_benigni_compagni_di_scuola-420156983/
-https://genova.repubblica.it/cronaca/2024/01/23/news/i_bambini_della_de_scalzi_polacco_premiati_da_mattarella_hanno_ricostruito_le_vicende_dei_60_piccoli_ebrei_che_dal_1938_fur-421954121/
-https://torino.repubblica.it/cronaca/2024/01/23/news/a_torino_si_studia_il_cibo_sostenibile_educazione_alimentare_anche_a_scuola-421953438/
-https://milano.repubblica.it/cronaca/2024/01/18/news/lombardia_preiscrizioni_alle_superiori_249_mila_ragazzi_test_licei_musicali_e_coreutici-421905167/
-https://www.repubblica.it/green-and-blue/2025/01/31/news/formica_rossa_di_fuoco_sicilia_conseguenze-421918313/
-https://parma.repubblica.it/cronaca/2024/01/23/news/tep_la_segnalazione_gli_autobus_vanno_fortissimo_uno_scossone_continuo-421963009/
-https://roma.repubblica.it/cronaca/2024/01/19/news/open_day_de_merode-421920000/
-https://napoli.repubblica.it/cronaca/2024/01/22/news/open_days_alla_federico_ii_via_agli_incontri_di_orientamento-421947435/
-https://parma.repubblica.it/cronaca/2024/01/18/news/asili_via_alle_iscrizioni_a_disposizione_1753_posti_le_novita_previste-421908711/
-https://www.repubblica.it/cultura/2023/11/26/news/stefano_massin_intervista_lezioni_educazione_sentimentale-421325413/
-https://www.repubblica.it/esteri/2024/01/22/news/regno_unito_300_scuole_si_impegnano_a_eliminare_le_parole_maschio_e_femmina-421946830/
-https://milano.repubblica.it/cronaca/2024/01/24/news/liceo_made_italy_lombardia-421964106/
-https://www.ilrestodelcarlino.it/pesaro/cronaca/il-made-in-italy-si-studia-al-liceo-racconteremo-le-eccellenze-456ce674
-https://torino.repubblica.it/cronaca/2024/01/20/news/made_in_italy_saranno_tre_le_scuole_che_aderiranno-421920954/
-https://www.repubblica.it/design/2024/01/12/news/tailoring_school_a_journey_into_education_la_mostra_in_triennale_sui_mestieri_artigiani-421867367/
-https://bari.repubblica.it/cronaca/2024/01/19/news/pasta_al_forno_faccette_con_verdure_ecco_come_potra_cambiare_nuovo_menu_mense_scolastiche_bari-421919919/
-https://parma.repubblica.it/cronaca/2024/01/22/news/oltre_76mila_persone_nei_musei_civici_di_parma_per_un_percorso_fra_arte_e_musica-421944879/
-https://palermo.repubblica.it/cronaca/2024/01/20/news/maestro_elementare_no_voti_solo_giudizi_motivazionali_gabriele_camelo-421927756/
-https://palermo.repubblica.it/societa/2023/12/24/news/il_mago_forest_io_cialtrone_che_studia_resisto_con_la_gialappas-421746153/
+6 https://bari.repubblica.it/cronaca/2024/01/18/news/la_maestra_che_ha_salvato_lalunna_dalla_crisi_epilettica_ho_mantenuto_la_calma_e_ascoltato_la_dottoressa_del_118_merito_-421911608/
+6 https://genova.repubblica.it/cronaca/2024/01/23/news/i_bambini_della_de_scalzi_polacco_premiati_da_mattarella_hanno_ricostruito_le_vicende_dei_60_piccoli_ebrei_che_dal_1938_fur-421954121/
+6 https://palermo.repubblica.it/societa/2023/12/24/news/il_mago_forest_io_cialtrone_che_studia_resisto_con_la_gialappas-421746153/
+6 https://www.repubblica.it/cultura/2023/11/26/news/stefano_massin_intervista_lezioni_educazione_sentimentale-421325413
+5 https://www.ilrestodelcarlino.it/fermo/cronaca/gara-di-robotica-per-200-studenti-la-lego-league-fa-tappa-allipsia-ricci-eb1ac788
+5 https://torino.repubblica.it/cronaca/2024/01/23/news/a_torino_si_studia_il_cibo_sostenibile_educazione_alimentare_anche_a_scuola-421953438/
+5 https://parma.repubblica.it/cronaca/2024/01/19/news/donne_in_matematica_la_giornata_mondiale_in_italia_sceglie_la_ricercatrice_cristiana_de_filippis_delluniversita_di_parma-421918996/
+5 https://torino.repubblica.it/cronaca/2024/01/20/news/i_bimbi_della_scuola_ebraica_donano_una_favola_per_kfir_il_piu_giovane_ostaggio_di_hamas-421920966/
+5 https://firenze.repubblica.it/cronaca/2023/12/11/news/eye_premio_studenti_ideatori_imprese_etiche-421617737/
+4 https://milano.repubblica.it/cronaca/2024/01/18/news/lombardia_preiscrizioni_alle_superiori_249_mila_ragazzi_test_licei_musicali_e_coreutici-421905167/
+4 https://roma.repubblica.it/cronaca/2024/01/19/news/open_day_de_merode-421920000/
+4 https://napoli.repubblica.it/cronaca/2024/01/22/news/open_days_alla_federico_ii_via_agli_incontri_di_orientamento-421947435/
+4 https://parma.repubblica.it/cronaca/2024/01/18/news/asili_via_alle_iscrizioni_a_disposizione_1753_posti_le_novita_previste-421908711/
+3 https://bari.repubblica.it/cronaca/2024/01/19/news/pasta_al_forno_faccette_con_verdure_ecco_come_potra_cambiare_nuovo_menu_mense_scolastiche_bari-421919919/
+3 https://palermo.repubblica.it/cronaca/2024/01/20/news/maestro_elementare_no_voti_solo_giudizi_motivazionali_gabriele_camelo-421927756/
+3 https://www.repubblica.it/moda-e-beauty/d/2023/10/25/news/significato_hype_giovani_holden-416106705/
+2 https://milano.repubblica.it/cronaca/2024/01/24/news/liceo_made_italy_lombardia-421964106/
+2 https://www.ilrestodelcarlino.it/pesaro/cronaca/il-made-in-italy-si-studia-al-liceo-racconteremo-le-eccellenze-456ce674
+2 https://torino.repubblica.it/cronaca/2024/01/20/news/made_in_italy_saranno_tre_le_scuole_che_aderiranno-421920954/
+2 https://www.repubblica.it/design/2024/01/12/news/tailoring_school_a_journey_into_education_la_mostra_in_triennale_sui_mestieri_artigiani-421867367/
+1 https://parma.repubblica.it/cronaca/2024/01/22/news/oltre_76mila_persone_nei_musei_civici_di_parma_per_un_percorso_fra_arte_e_musica-421944879/
+1 https://palermo.repubblica.it/societa/2023/11/12/news/giusi_cataldo_intervista_benigni_compagni_di_scuola-420156983/
+
 
 inflazione^0.5 OR italia^2
 6 https://www.quotidiano.net/esteri/crisi-del-mar-rosso-si-alla-missione-ue-sara-solo-difensiva-italia-in-prima-linea-c4e2f654

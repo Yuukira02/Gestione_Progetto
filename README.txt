@@ -20,3 +20,5 @@ Per consultare le prestazioni delle diverse versioni abbiamo utilizzato l'algori
   Il codice fa uso di una funzione, execute_query, definita in searcher.py. E' suggerito impostare il valore limit a 20, per maggiori prestazioni, nella seguente riga di codice (132): 
         res = searcher.search(q, limit=20)
 
+indexing.py è l'indicizzatore; nota che: se il searcher non da risultati e il tester ritorna solo valori uguali a zero, c'è un problema nell'indexer, quindi vale provare a farlo eseguire da solo e valutare caso per caso che problemi da. Una risoluzione lazy sarebbe di eliminare quei file che "non esistono", e che impediscono la corretta indicizzazione (fosse questo il problema). 
+  Un altro problema può essere che indicizza sulla directory sbagliata, caso speciale in cui avete nominato la cartella "notizie" in modo arbitrario. 

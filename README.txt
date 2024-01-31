@@ -7,6 +7,10 @@ pip install transformers
 pip install newspaper3k
 pip install autocorrect
 pip install pytorch
+pip install wordnet
+  (nota: bisognerà estrarre manualmente la cartella wornet.zip, in molte persone si è notato che il download non lo fa in automatico e quindi il programma non riesce ad accedere comunque al corpus)
+pip install tkinter
+pip install ttkthemes
 
 
 Estratto il file .7z in una cartella (che chiameremo "di_lavoro"), controllare la presenza dei seguenti file: Twinkle.py, searcher.py, indexing.py, ndcg.py, benchmark.txt; infine la sottodirectory "notizie". 
